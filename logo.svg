@@ -1,0 +1,31 @@
+<svg viewBox="-10 -10 110 140" xmlns="http://www.w3.org/2000/svg">
+  <!-- Pin shape - elongated with narrower point -->
+  <path d="M45 0 C20 0 0 20 0 45 C0 70 30 100 45 120 C60 100 90 70 90 45 C90 20 70 0 45 0 Z"
+        fill="#001f4d"
+        stroke="#001f4d"
+        stroke-width="3"/>
+
+  <!-- Inner circle background -->
+  <circle cx="45" cy="45" r="25" fill="#001f4d"/>
+
+  <!-- 10 dots arranged in circular pattern -->
+  <g transform="translate(45, 45)">
+    <circle cx="0" cy="-23" r="3" fill="white"/>
+    <circle cx="16" cy="-16" r="3" fill="white"/>
+    <circle cx="23" cy="0" r="3" fill="white"/>
+    <circle cx="16" cy="16" r="3" fill="white"/>
+    <circle cx="0" cy="23" r="3" fill="white"/>
+    <circle cx="-16" cy="16" r="3" fill="white"/>
+    <circle cx="-23" cy="0" r="3" fill="white"/>
+    <circle cx="-16" cy="-16" r="3" fill="white"/>
+    <circle cx="-8" cy="-8" r="3" fill="white"/>
+    <circle cx="8" cy="8" r="3" fill="white"/>
+
+    <!-- Connecting optimized path -->
+    <path d="M0,-23 L16,-16 L23,0 L16,16 L8,8 L0,23 L-16,16 L-23,0 L-16,-16 L-8,-8 L0,-23"
+          fill="none"
+          stroke="white"
+          stroke-width="2"
+          opacity="0.5"/>
+  </g>
+</svg>

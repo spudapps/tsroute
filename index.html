@@ -397,6 +397,12 @@
             gap: 8px;
         }
 
+        @media (max-width: 768px) {
+            .map-theme-switcher {
+                flex-direction: column;
+            }
+        }
+
         .theme-option {
             width: 40px;
             height: 40px;
@@ -887,6 +893,20 @@
             padding: 15px;
         }
 
+        @media (max-width: 768px) {
+            #expandButton {
+                bottom: 80px;
+            }
+
+            #downloadButton {
+                bottom: 80px;
+            }
+
+            #settingsButton {
+                bottom: 80px;
+            }
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 20px 15px;
@@ -1047,6 +1067,7 @@
         let currentRoute = [];
         let homeCoordinates = { lat: 0, lon: 0, address: '' };
         let markers = [];
+        let routeLine = null;
         let selectedGpsApp = localStorage.getItem('selectedGpsApp') || 'google';
 
         // Geocoding Cache and Rate Limiter
@@ -1773,7 +1794,7 @@
             ];
 
             // Draw route line
-            L.polyline(routeCoords, {
+            routeLine = L.polyline(routeCoords, {
                 color: '#667eea',
                 weight: 4,
                 opacity: 0.8,
@@ -1931,6 +1952,27 @@
 
             // Clear markers array
             markers = [];
+
+            // Remove old route line
+            if (routeLine) {
+                map.removeLayer(routeLine);
+            }
+
+            // Rebuild route coordinates array with updated order (home → stops → home)
+            const routeCoords = [
+                [homeCoordinates.lat, homeCoordinates.lon],
+                ...currentRoute.map(stop => [parseFloat(stop.lat), parseFloat(stop.lon)]),
+                [homeCoordinates.lat, homeCoordinates.lon]
+            ];
+
+            // Redraw route line
+            routeLine = L.polyline(routeCoords, {
+                color: '#667eea',
+                weight: 4,
+                opacity: 0.8,
+                lineCap: 'round',
+                lineJoin: 'round'
+            }).addTo(map);
 
             // Re-add all markers with correct numbers
             currentRoute.forEach((s, i) => {

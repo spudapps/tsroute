@@ -400,6 +400,7 @@
         @media (max-width: 768px) {
             .map-theme-switcher {
                 flex-direction: column;
+                padding-bottom: 80px;
             }
         }
 
@@ -447,14 +448,14 @@
         }
 
         #expandButton {
-            padding: 10px;
+            padding: 10px 15px;
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 50px;
+            width: 70px;
             height: 50px;
-            border-radius: 50%;
+            border-radius: 25px;
             background: white;
             border: none;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -462,13 +463,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 4px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
+        }
+
+        #expandButton.above-panel {
+            bottom: calc(40vh + 20px);
         }
 
         #expandButton:hover {
             transform: translateX(-50%) scale(1.1);
             box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+
+        #expandButton svg {
+            flex-shrink: 0;
         }
 
         #fitRouteButton {
@@ -495,54 +505,76 @@
             box-shadow: 0 6px 16px rgba(0,0,0,0.2);
         }
 
-        #downloadButton {
-            padding: 10px;
-            position: fixed;
-            bottom: 20px;
-            left: calc(50% + 65px);
-            transform: translateX(-50%);
+        .panel-actions {
+            position: relative;
+            padding: 15px 15px 10px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        #listPanel.expanded .panel-actions {
+            position: sticky;
+            top: 0;
+        }
+
+        .home-address-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #001f4d;
+            font-weight: 500;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .home-address-display svg {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+        }
+
+        .home-address-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .panel-action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .panel-action-button {
+            padding: 8px;
             background: white;
             border: 2px solid #e2e8f0;
             border-radius: 50%;
             cursor: pointer;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        #downloadButton:hover {
-            transform: translateX(-50%) scale(1.1);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        .panel-action-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-color: #718096;
         }
 
-        #settingsButton {
-            padding: 10px;
-            position: fixed;
-            bottom: 20px;
-            left: calc(50% + 130px);
-            transform: translateX(-50%);
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 50%;
-            cursor: pointer;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        #settingsButton:hover {
-            transform: translateX(-50%) scale(1.1);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        .panel-action-button svg {
+            width: 20px;
+            height: 20px;
         }
 
         #listPanel {
@@ -556,8 +588,43 @@
             box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
             transform: translateY(100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow-y: auto;
+            overflow: hidden;
             z-index: 999;
+            display: flex;
+            flex-direction: column;
+            min-height: 20vh;
+            max-height: 80vh;
+        }
+
+        #listPanel.resizing {
+            transition: none;
+        }
+
+        .resize-handle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            cursor: ns-resize;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .resize-handle::before {
+            content: '';
+            width: 40px;
+            height: 4px;
+            background: #cbd5e0;
+            border-radius: 2px;
+            transition: background 0.2s;
+        }
+
+        .resize-handle:hover::before,
+        .resize-handle:active::before {
+            background: #718096;
         }
 
         #listPanel.expanded {
@@ -582,6 +649,30 @@
 
         #settingsPanel.expanded {
             transform: translateY(0);
+        }
+
+        .settings-close-button {
+            width: 40px;
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .settings-close-button:hover {
+            background-color: rgba(113, 128, 150, 0.1);
+        }
+
+        .settings-close-button svg {
+            display: block;
         }
 
         .settings-content {
@@ -630,7 +721,10 @@
         }
 
         .list-content {
-            padding: 30px 20px 100px 20px;
+            padding: 20px;
+            padding-bottom: 100px;
+            overflow-y: auto;
+            flex: 1;
         }
 
         .list-header {
@@ -698,10 +792,15 @@
             align-items: center;
             justify-content: center;
             user-select: none;
+            touch-action: none; /* Prevent default touch behaviors like scrolling */
         }
 
         .drag-handle:active {
             cursor: grabbing;
+        }
+
+        .route-step.draggable {
+            touch-action: none; /* Prevent scrolling while dragging */
         }
 
         .drag-handle svg {
@@ -898,12 +997,8 @@
                 bottom: 80px;
             }
 
-            #downloadButton {
-                bottom: 80px;
-            }
-
-            #settingsButton {
-                bottom: 80px;
+            #expandButton.above-panel {
+                bottom: calc(40vh + 80px);
             }
         }
 
@@ -1012,15 +1107,8 @@
         </div>
 
         <button id="expandButton">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-icon lucide-list"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg>
-        </button>
-
-        <button id="downloadButton" title="Download GPX file">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#657893" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download-icon lucide-download"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
-        </button>
-
-        <button id="settingsButton" title="Navigation settings">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-icon lucide-list"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-vertical-icon lucide-move-vertical"><path d="M12 2v20"/><path d="m8 18 4 4 4-4"/><path d="m8 6 4-4 4 4"/></svg>
         </button>
 
         <button id="fitRouteButton" title="Fit route to viewport">
@@ -1028,18 +1116,33 @@
         </button>
 
         <div id="listPanel">
-            <div class="list-content">
-                <div id="routeList"></div>
-
-                <div class="action-buttons">
-                    <button class="edit-route-button" onclick="editRoute()">
-                        ✏️ Edit Route
+            <div class="resize-handle"></div>
+            <div class="panel-actions">
+                <div class="home-address-display">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#001f4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-route-icon lucide-route"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>
+                    <span class="home-address-text" id="panelHomeAddress">${homeAddress || 'Home'}</span>
+                </div>
+                <div class="panel-action-buttons">
+                    <button class="panel-action-button" title="Edit route" onclick="editRoute()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+                    </button>
+                    <button class="panel-action-button" title="Download GPX file" onclick="generateGPX()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download-icon lucide-download"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
+                    </button>
+                    <button class="panel-action-button" title="Navigation settings" onclick="toggleSettingsPanel()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
                     </button>
                 </div>
+            </div>
+            <div class="list-content" id="listContent">
+                <div id="routeList"></div>
             </div>
         </div>
 
         <div id="settingsPanel">
+            <button class="settings-close-button" onclick="closeSettingsPanel()" aria-label="Close settings">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
             <div class="settings-content">
                 <h3>Navigation Settings</h3>
 
@@ -1048,11 +1151,16 @@
                     <select id="gpsAppSelect" onchange="updateGpsAppPreference()">
                         <option value="google">Google Maps</option>
                         <option value="apple">Apple Maps</option>
-                        <option value="magicearth">Magic Earth</option>
+                        <!-- <option value="magicearth">Magic Earth</option> -->
                         <option value="here">HERE WeGo</option>
-                        <option value="osm">OpenStreetMap</option>
+                        <!-- <option value="osm">OpenStreetMap</option> -->
                     </select>
-                    <p class="setting-description">Choose which app to use for navigation links. On mobile, links will open in the app if installed.</p>
+                    <p class="setting-description">
+                        Choose which GPS app to use for navigation links
+                    </p>
+                    <p class="setting-description">
+                        Routes can also be downloaded as a GPX file for unsupported GPS apps
+                    </p>
                 </div>
             </div>
         </div>
@@ -1432,18 +1540,6 @@
             const routeList = document.getElementById('routeList');
             let html = '';
 
-            // Home start marker
-            html += `
-                <div class="route-step" style="margin-bottom: 20px;">
-                    <div class="step-number">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-locate-fixed-icon lucide-locate-fixed"><line x1="2" x2="5" y1="12" y2="12"/><line x1="19" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="5"/><line x1="12" x2="12" y1="19" y2="22"/><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg>
-                    </div>
-                    <div class="step-details">
-                        <div class="step-address">${homeAddress || 'Home'}</div>
-                    </div>
-                </div>
-            `;
-
             // Render each batch
             batches.forEach((batch, batchIndex) => {
                 const stopCount = batch.stops.length;
@@ -1473,7 +1569,7 @@
                                    ${isOverLimit ? `title="${warningTitle}"` : ''}
                                    onclick="event.stopPropagation()"
                                    target="_blank">
-                                    Open in ${appName}
+                                    ${window.innerWidth <= 768 ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link-icon lucide-external-link"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>' : `Open in ${appName}`}
                                 </a>
                                 <span class="expand-icon">▼</span>
                             </div>
@@ -1482,7 +1578,6 @@
                             <div class="batch-stops">
                                 ${batch.stops.map((stop, stopIndex) => `
                                     <div class="route-step draggable"
-                                         draggable="true"
                                          data-batch-index="${batchIndex}"
                                          data-stop-index="${stopIndex}"
                                          data-global-index="${batch.startIndex + stopIndex}">
@@ -1505,19 +1600,13 @@
                 `;
             });
 
-            // Home end marker
-            html += `
-                <div class="route-step" style="margin-top: 20px;">
-                    <div class="step-number">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-check-inside-icon lucide-map-pin-check-inside"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><path d="m9 10 2 2 4-4"/></svg>
-                    </div>
-                    <div class="step-details">
-                        <div class="step-address">${homeAddress || 'Home'}</div>
-                    </div>
-                </div>
-            `;
-
             routeList.innerHTML = html;
+
+            // Update home address in panel
+            const panelHomeAddress = document.getElementById('panelHomeAddress');
+            if (panelHomeAddress) {
+                panelHomeAddress.textContent = homeAddress || 'Home';
+            }
 
             // Add drag-and-drop event listeners
             addDragAndDropListeners();
@@ -1864,64 +1953,126 @@
             }
         }
 
-        // Drag and Drop Functions
+        // Pointer-based Drag and Drop (works on both desktop and mobile)
         let draggedElement = null;
         let draggedGlobalIndex = null;
+        let isDragging = false;
+        let currentDropTarget = null;
+        let scrollInterval = null;
+        const SCROLL_ZONE = 80; // pixels from top/bottom to trigger scroll
+        const SCROLL_SPEED = 2; // pixels per frame
 
         function addDragAndDropListeners() {
             const draggableItems = document.querySelectorAll('.route-step.draggable');
 
             draggableItems.forEach(item => {
-                item.addEventListener('dragstart', handleDragStart);
-                item.addEventListener('dragend', handleDragEnd);
-                item.addEventListener('dragover', handleDragOver);
-                item.addEventListener('drop', handleDrop);
-                item.addEventListener('dragleave', handleDragLeave);
+                item.addEventListener('pointerdown', handlePointerDown);
             });
         }
 
-        function handleDragStart(e) {
-            draggedElement = this;
-            draggedGlobalIndex = parseInt(this.dataset.globalIndex);
-            this.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', this.innerHTML);
-        }
+        function handlePointerDown(e) {
+            // Only handle primary pointer (left mouse button or first touch)
+            if (e.isPrimary) {
+                draggedElement = this;
+                draggedGlobalIndex = parseInt(this.dataset.globalIndex);
 
-        function handleDragEnd(e) {
-            this.classList.remove('dragging');
-            // Remove all drag-over classes
-            document.querySelectorAll('.route-step.drag-over').forEach(item => {
-                item.classList.remove('drag-over');
-            });
-        }
+                // Add pointer event listeners to track movement
+                document.addEventListener('pointermove', handlePointerMove);
+                document.addEventListener('pointerup', handlePointerUp);
+                document.addEventListener('pointercancel', handlePointerCancel);
 
-        function handleDragOver(e) {
-            if (e.preventDefault) {
-                e.preventDefault();
+                // Small delay before starting drag to distinguish from clicks
+                setTimeout(() => {
+                    if (draggedElement === this) {
+                        isDragging = true;
+                        this.classList.add('dragging');
+                        // Capture pointer to this element
+                        this.setPointerCapture(e.pointerId);
+                    }
+                }, 100);
             }
-            e.dataTransfer.dropEffect = 'move';
-
-            if (this.classList.contains('draggable') && this !== draggedElement) {
-                this.classList.add('drag-over');
-            }
-
-            return false;
         }
 
-        function handleDragLeave(e) {
-            this.classList.remove('drag-over');
-        }
+        function handlePointerMove(e) {
+            if (!isDragging || !draggedElement) return;
 
-        function handleDrop(e) {
-            if (e.stopPropagation) {
-                e.stopPropagation();
+            e.preventDefault();
+
+            // Get element at pointer position (excluding the dragged element)
+            draggedElement.style.pointerEvents = 'none';
+            const elementBelow = document.elementFromPoint(e.clientX, e.clientY);
+            draggedElement.style.pointerEvents = '';
+
+            // Find the closest route-step element
+            const dropTarget = elementBelow?.closest('.route-step.draggable');
+
+            // Clear previous drag-over state
+            if (currentDropTarget && currentDropTarget !== dropTarget) {
+                currentDropTarget.classList.remove('drag-over');
             }
 
-            if (draggedElement !== this && this.classList.contains('draggable')) {
-                const dropGlobalIndex = parseInt(this.dataset.globalIndex);
+            // Set new drag-over state
+            if (dropTarget && dropTarget !== draggedElement) {
+                dropTarget.classList.add('drag-over');
+                currentDropTarget = dropTarget;
+            } else {
+                currentDropTarget = null;
+            }
+
+            // Auto-scroll when dragging near edges
+            handleAutoScroll(e);
+        }
+
+        function handleAutoScroll(e) {
+            const listContent = document.getElementById('listContent');
+            if (!listContent) return;
+
+            const rect = listContent.getBoundingClientRect();
+            const pointerY = e.clientY;
+
+            // Calculate distance from top and bottom of scrollable area
+            const distanceFromTop = pointerY - rect.top;
+            const distanceFromBottom = rect.bottom - pointerY;
+
+            // Stop any existing scroll
+            if (scrollInterval) {
+                cancelAnimationFrame(scrollInterval);
+                scrollInterval = null;
+            }
+
+            // Check if pointer is in scroll zone
+            if (distanceFromTop < SCROLL_ZONE && distanceFromTop > 0) {
+                // Scroll up - slower near edge
+                const scrollSpeed = SCROLL_SPEED * (1 - distanceFromTop / SCROLL_ZONE);
+                startScrolling(-scrollSpeed, listContent);
+            } else if (distanceFromBottom < SCROLL_ZONE && distanceFromBottom > 0) {
+                // Scroll down - slower near edge
+                const scrollSpeed = SCROLL_SPEED * (1 - distanceFromBottom / SCROLL_ZONE);
+                startScrolling(scrollSpeed, listContent);
+            }
+        }
+
+        function startScrolling(speed, container) {
+            function scroll() {
+                if (!isDragging) {
+                    scrollInterval = null;
+                    return;
+                }
+
+                container.scrollTop += speed;
+                scrollInterval = requestAnimationFrame(scroll);
+            }
+            scroll();
+        }
+
+        function handlePointerUp(e) {
+            if (!draggedElement) return;
+
+            if (isDragging && currentDropTarget && currentDropTarget !== draggedElement) {
+                // Perform the drop
+                const dropGlobalIndex = parseInt(currentDropTarget.dataset.globalIndex);
                 const draggedBatchIndex = parseInt(draggedElement.dataset.batchIndex);
-                const dropBatchIndex = parseInt(this.dataset.batchIndex);
+                const dropBatchIndex = parseInt(currentDropTarget.dataset.batchIndex);
 
                 // Reorder the route array
                 const [removed] = currentRoute.splice(draggedGlobalIndex, 1);
@@ -1943,7 +2094,38 @@
                 updateMapMarkers();
             }
 
-            return false;
+            cleanupDrag();
+        }
+
+        function handlePointerCancel(e) {
+            cleanupDrag();
+        }
+
+        function cleanupDrag() {
+            if (draggedElement) {
+                draggedElement.classList.remove('dragging');
+            }
+
+            // Remove all drag-over classes
+            document.querySelectorAll('.route-step.drag-over').forEach(item => {
+                item.classList.remove('drag-over');
+            });
+
+            // Stop auto-scroll
+            if (scrollInterval) {
+                cancelAnimationFrame(scrollInterval);
+                scrollInterval = null;
+            }
+
+            // Remove event listeners
+            document.removeEventListener('pointermove', handlePointerMove);
+            document.removeEventListener('pointerup', handlePointerUp);
+            document.removeEventListener('pointercancel', handlePointerCancel);
+
+            draggedElement = null;
+            draggedGlobalIndex = null;
+            isDragging = false;
+            currentDropTarget = null;
         }
 
         function updateMapMarkers() {
@@ -2006,20 +2188,120 @@
             });
         }
 
-        // Panel Toggle
+        // Panel Toggle and Resize
         const expandButton = document.getElementById('expandButton');
         const listPanel = document.getElementById('listPanel');
-        const settingsButton = document.getElementById('settingsButton');
+        // const settingsButton = document.getElementById('settingsButton');
         const settingsPanel = document.getElementById('settingsPanel');
+        let isResizing = false;
+        let resizeStartY = 0;
+        let resizeStartHeight = 0;
 
         function togglePanel() {
             isExpanded = !isExpanded;
             listPanel.classList.toggle('expanded');
 
+            // Update button position based on panel state
+            if (isExpanded) {
+                updateExpandButtonPosition();
+            } else {
+                // Reset to default position when collapsed
+                expandButton.classList.remove('above-panel');
+                expandButton.style.bottom = '';
+            }
+
             // Close settings panel if open
             if (isSettingsExpanded) {
                 isSettingsExpanded = false;
                 settingsPanel.classList.remove('expanded');
+            }
+        }
+
+        function updateExpandButtonPosition() {
+            const viewportHeight = window.innerHeight;
+            const panelHeight = listPanel.offsetHeight;
+            const heightVh = (panelHeight / viewportHeight) * 100;
+
+            // Check if we're on mobile (using same breakpoint as CSS)
+            const isMobile = window.innerWidth <= 768;
+            const baseOffset = isMobile ? 80 : 20;
+
+            if (heightVh > 45) {
+                expandButton.style.bottom = `calc(${panelHeight}px + ${baseOffset}px)`;
+                expandButton.classList.add('above-panel');
+            } else {
+                expandButton.style.bottom = '';
+                expandButton.classList.remove('above-panel');
+            }
+        }
+
+        // Panel resize functionality
+        const resizeHandle = document.querySelector('.resize-handle');
+
+        function initPanelResize() {
+            resizeHandle.addEventListener('pointerdown', handleResizeStart);
+        }
+
+        function handleResizeStart(e) {
+            if (!isExpanded) return; // Only allow resizing when panel is expanded
+
+            e.preventDefault();
+            isResizing = true;
+            resizeStartY = e.clientY;
+            resizeStartHeight = listPanel.offsetHeight;
+
+            listPanel.classList.add('resizing');
+
+            document.addEventListener('pointermove', handleResizeMove);
+            document.addEventListener('pointerup', handleResizeEnd);
+
+            resizeHandle.setPointerCapture(e.pointerId);
+        }
+
+        function handleResizeMove(e) {
+            if (!isResizing) return;
+
+            e.preventDefault();
+
+            // Calculate new height (dragging up increases height, down decreases)
+            const deltaY = resizeStartY - e.clientY;
+            const newHeight = resizeStartHeight + deltaY;
+
+            // Get viewport height for min/max calculations
+            const viewportHeight = window.innerHeight;
+            const minHeight = viewportHeight * 0.2; // 20vh
+            const maxHeight = viewportHeight * 0.8; // 80vh
+
+            // Clamp height between min and max
+            const clampedHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+
+            // Apply new height
+            listPanel.style.height = `${clampedHeight}px`;
+
+            // Update expand button position
+            updateExpandButtonPosition();
+        }
+
+        function handleResizeEnd(e) {
+            if (!isResizing) return;
+
+            isResizing = false;
+            listPanel.classList.remove('resizing');
+
+            document.removeEventListener('pointermove', handleResizeMove);
+            document.removeEventListener('pointerup', handleResizeEnd);
+
+            // Store the user's preferred height
+            const viewportHeight = window.innerHeight;
+            const heightVh = (listPanel.offsetHeight / viewportHeight) * 100;
+            localStorage.setItem('listPanelHeight', heightVh);
+        }
+
+        // Load saved panel height on initialization
+        function loadPanelHeight() {
+            const savedHeight = localStorage.getItem('listPanelHeight');
+            if (savedHeight) {
+                listPanel.style.height = `${savedHeight}vh`;
             }
         }
 
@@ -2034,6 +2316,16 @@
             }
         }
 
+        function closeSettingsPanel() {
+            isSettingsExpanded = false;
+            settingsPanel.classList.remove('expanded');
+
+            // Expand list panel
+            isExpanded = true;
+            listPanel.classList.add('expanded');
+            expandButton.classList.add('above-panel');
+        }
+
         function updateGpsAppPreference() {
             const select = document.getElementById('gpsAppSelect');
             selectedGpsApp = select.value;
@@ -2046,7 +2338,7 @@
         }
 
         expandButton.addEventListener('click', togglePanel);
-        settingsButton.addEventListener('click', toggleSettingsPanel);
+        // settingsButton.addEventListener('click', toggleSettingsPanel);
 
         // Load saved GPS app preference on page load
         document.addEventListener('DOMContentLoaded', () => {
@@ -2054,6 +2346,10 @@
             if (select) {
                 select.value = selectedGpsApp;
             }
+
+            // Initialize panel resize functionality
+            initPanelResize();
+            loadPanelHeight();
         });
 
         // Fit Route Button

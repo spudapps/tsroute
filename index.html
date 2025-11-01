@@ -1963,18 +1963,22 @@
         const SCROLL_SPEED = 2; // pixels per frame
 
         function addDragAndDropListeners() {
-            const draggableItems = document.querySelectorAll('.route-step.draggable');
+            const dragHandles = document.querySelectorAll('.drag-handle');
 
-            draggableItems.forEach(item => {
-                item.addEventListener('pointerdown', handlePointerDown);
+            dragHandles.forEach(handle => {
+                handle.addEventListener('pointerdown', handlePointerDown);
             });
         }
 
         function handlePointerDown(e) {
             // Only handle primary pointer (left mouse button or first touch)
             if (e.isPrimary) {
-                draggedElement = this;
-                draggedGlobalIndex = parseInt(this.dataset.globalIndex);
+                // Find the parent route-step element
+                const routeStep = this.closest('.route-step.draggable');
+                if (!routeStep) return;
+
+                draggedElement = routeStep;
+                draggedGlobalIndex = parseInt(routeStep.dataset.globalIndex);
 
                 // Add pointer event listeners to track movement
                 document.addEventListener('pointermove', handlePointerMove);
@@ -1983,9 +1987,9 @@
 
                 // Small delay before starting drag to distinguish from clicks
                 setTimeout(() => {
-                    if (draggedElement === this) {
+                    if (draggedElement === routeStep) {
                         isDragging = true;
-                        this.classList.add('dragging');
+                        routeStep.classList.add('dragging');
                         // Capture pointer to this element
                         this.setPointerCapture(e.pointerId);
                     }
